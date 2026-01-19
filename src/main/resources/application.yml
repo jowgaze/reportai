@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: reportai
+
+  datasource:
+    username: ${PG_USERNAME:postgres}
+    password: ${PG_PASSWORD:root}
+    url: jdbc:postgresql://${PG_HOST:localhost}:${PG_PORT:5432}/${PGDATABASE:reportai}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+springdoc:
+  swagger-ui:
+    path: /reportai.html
+  api-docs:
+    path: /reportai
+  packages-to-scan: com.reportai.controller
