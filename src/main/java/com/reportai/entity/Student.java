@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -21,13 +22,21 @@ public class Student {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    private LocalDate dateOfBirth;
+
+    @Column(nullable = false)
+    private String responsible;
+
     @JsonIgnore
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
     private List<Daily> dailies = new ArrayList<>();
 
-    public Student(String name){
+    public Student(String name, String responsible, LocalDate dateOfBirth){
         this.name = name;
+        this.responsible = responsible;
+        this.dateOfBirth = dateOfBirth;
     }
 
     @Override

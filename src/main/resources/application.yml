@@ -19,3 +19,6 @@ springdoc:
   api-docs:
     path: /reportai
   packages-to-scan: com.reportai.controller
+
+ai:
+  model: ${AI_MODEL:gemini-2.5-flash}

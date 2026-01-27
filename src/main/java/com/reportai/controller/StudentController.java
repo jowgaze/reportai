@@ -3,6 +3,7 @@ package com.reportai.controller;
 import com.reportai.dto.daily.DailyRequestDto;
 import com.reportai.dto.daily.DailyResponseDto;
 import com.reportai.dto.student.StudentRequestDto;
+import com.reportai.dto.student.StudentResponseDto;
 import com.reportai.entity.Daily;
 import com.reportai.entity.Student;
 import com.reportai.service.StudentService;
@@ -14,29 +15,36 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
 @RequiredArgsConstructor
+@RequestMapping("/api/students")
 public class StudentController {
     private final StudentService service;
 
-    @PostMapping("/student")
-    public ResponseEntity<Student> create(@RequestBody @Valid StudentRequestDto request){
-        return ResponseEntity.ok(service.create(request));
+    @PostMapping
+    public ResponseEntity<StudentResponseDto> createStudent(@RequestBody @Valid StudentRequestDto request){
+        return ResponseEntity.ok(service.createStudent(request));
     }
 
-    @GetMapping("/student/{student_id}")
-    public ResponseEntity<Student> findById(@PathVariable("student_id") Long studentId){
-        return ResponseEntity.ok(service.findById(studentId));
+    @GetMapping("/{id}")
+    public ResponseEntity<StudentResponseDto> findStudentById(@PathVariable Long id){
+        return ResponseEntity.ok(service.findStudentById(id));
     }
 
-    @PostMapping("/daily")
-    public ResponseEntity<Daily> createDaily(@RequestBody @Valid DailyRequestDto request){
-        return ResponseEntity.ok(service.createDaily(request));
+    @GetMapping("/{id}/report")
+    public ResponseEntity<String> generateReport(@PathVariable Long id){
+        return ResponseEntity.ok(service.generateReport(id));
     }
 
-    @GetMapping("/dailies/{student_id}")
-    public ResponseEntity<List<DailyResponseDto>> findDailiesByStudent(@PathVariable("student_id") Long studentId){
-        return ResponseEntity.ok(service.findDailiesByStudent(studentId));
+    @PostMapping("/{id}/daily")
+    public ResponseEntity<DailyResponseDto> createDaily(@PathVariable Long id, @RequestBody @Valid DailyRequestDto request){
+        return ResponseEntity.ok(service.createDaily(id, request.content()));
     }
 
+    @GetMapping("/{id}/daily")
+    public ResponseEntity<List<DailyResponseDto>> findDailiesByStudent(@PathVariable Long id){
+        return ResponseEntity.ok(service.findDailiesByStudent(id));
+    }
 }
+
+
+

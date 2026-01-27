@@ -1,9 +1,9 @@
 package com.reportai.service;
 
-import com.reportai.dto.daily.DailyRequestDto;
 import com.reportai.dto.daily.DailyResponseDto;
+import com.reportai.dto.student.StudentMapper;
 import com.reportai.dto.student.StudentRequestDto;
-import com.reportai.entity.Daily;
+import com.reportai.dto.student.StudentResponseDto;
 import com.reportai.entity.Student;
 import com.reportai.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,27 +19,39 @@ public class StudentService {
     private final DailyService dailyService;
 
     @Transactional
-    public Student create(StudentRequestDto request) {
-        Student student = new Student(request.name());
-        return repository.save(student);
+    public StudentResponseDto createStudent(StudentRequestDto request) {
+        Student student = new Student(request.name(), request.responsible(), request.dateOfBirth());
+        student = repository.save(student);
+        return StudentMapper.toDto(student);
+    }
+
+    @Transactional(readOnly = true)
+    public StudentResponseDto findStudentById(Long id) {
+        Student student = findById(id);
+        System.out.println(student);
+        return StudentMapper.toDto(student);
     }
 
     @Transactional
-    public Daily createDaily(DailyRequestDto request) {
-        String content = request.content();
-        Student student = findById(request.studentId());
-        return dailyService.create(content, student);
+    public DailyResponseDto createDaily(Long id, String content) {
+        Student student = findById(id);
+        return dailyService.createDaily(content, student);
     }
 
     @Transactional(readOnly = true)
-    public Student findById(Long id) {
+    public List<DailyResponseDto> findDailiesByStudent(Long id) {
+        return dailyService.findDailiesByStudentId(id);
+    }
+
+    @Transactional(readOnly = true)
+    public String generateReport(Long id) {
+        String name = repository.findNameById(id);
+        return dailyService.generateReport(name, id);
+    }
+
+    private Student findById(Long id) {
         return repository.findById(id).orElseThrow(
                 () -> new RuntimeException(String.format("Student with id %s not found", id))
         );
-    }
-
-    @Transactional(readOnly = true)
-    public List<DailyResponseDto> findDailiesByStudent(Long id){
-        return dailyService.findAllByStudentId(id);
     }
 }
