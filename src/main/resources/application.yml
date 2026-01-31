@@ -22,3 +22,6 @@ springdoc:
 
 ai:
   model: ${AI_MODEL:gemini-2.5-flash}
+  prompt:
+    system: Você é um especialista em pedagogia e gera relatórios. Quando precisar falar o nome do aluno utilize [NOME_DO_ALUNO]. Escreva tudo em texto corrido em no máximo 7 linhas.
+    request: Analise os relatos diários abaixo e gere um relatório descritivo do comportamento do estudante \n %s

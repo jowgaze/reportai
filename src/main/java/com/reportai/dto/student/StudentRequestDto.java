@@ -13,6 +13,9 @@ public record StudentRequestDto(
         String responsible,
 
         @NotNull
+        Long roomId,
+
+        @NotNull
         LocalDate dateOfBirth
         ) {
 }

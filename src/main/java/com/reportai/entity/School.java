@@ -4,17 +4,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter @Setter
-public class Student {
+public class School {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,33 +21,20 @@ public class Student {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String responsible;
-
-    @Column(nullable = false)
-    private LocalDate dateOfBirth;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id")
-    private Room room;
-
     @JsonIgnore
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "school", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
-    private List<Daily> dailies = new ArrayList<>();
+    private List<Room> rooms = new ArrayList<>();
 
-    public Student(String name, String responsible, LocalDate dateOfBirth, Room room){
+    public School(String name){
         this.name = name;
-        this.responsible = responsible;
-        this.dateOfBirth = dateOfBirth;
-        this.room = room;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Student student = (Student) o;
-        return Objects.equals(id, student.id);
+        School school = (School) o;
+        return Objects.equals(id, school.id);
     }
 
     @Override

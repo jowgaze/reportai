@@ -1,9 +1,9 @@
 package com.reportai.controller;
 
-import com.reportai.dto.student.StudentRequestDto;
-import com.reportai.dto.student.StudentResponseDto;
-import com.reportai.dto.student.StudentUpdateDto;
-import com.reportai.service.StudentService;
+import com.reportai.dto.room.RoomRequestDto;
+import com.reportai.dto.room.RoomResponseDto;
+import com.reportai.dto.room.RoomUpdateDto;
+import com.reportai.service.RoomService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,29 +14,29 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/students")
-public class StudentController {
-    private final StudentService service;
+@RequestMapping("/api/rooms")
+public class RoomController {
+    private final RoomService service;
 
     @PostMapping
-    public ResponseEntity<StudentResponseDto> create(@RequestBody @Valid StudentRequestDto request){
+    public ResponseEntity<RoomResponseDto> create(@RequestBody @Valid RoomRequestDto request){
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(service.create(request));
     }
 
     @GetMapping
-    public ResponseEntity<List<StudentResponseDto>> findAllByRoom(@RequestParam Long roomId){
-        return ResponseEntity.ok(service.findAllByRoom(roomId));
+    public ResponseEntity<List<RoomResponseDto>> findAllBySchool(@RequestParam Long schoolId){
+        return ResponseEntity.ok(service.findAllBySchool(schoolId));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StudentResponseDto> findById(@PathVariable Long id){
+    public ResponseEntity<RoomResponseDto> findById(@PathVariable Long id){
         return ResponseEntity.ok(service.findResponseById(id));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody @Valid StudentUpdateDto request){
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody @Valid RoomUpdateDto request){
         service.update(id, request);
         return ResponseEntity.noContent().build();
     }
@@ -47,6 +47,3 @@ public class StudentController {
         return ResponseEntity.noContent().build();
     }
 }
-
-
-
