@@ -5,7 +5,7 @@ spring:
   datasource:
     username: ${PG_USERNAME:postgres}
     password: ${PG_PASSWORD:root}
-    url: jdbc:postgresql://${PG_HOST:localhost}:${PG_PORT:5432}/${PGDATABASE:reportai}
+    url: ${PG_URL:jdbc:postgresql://localhost:5432/reportai}
   jpa:
     hibernate:
       ddl-auto: update
